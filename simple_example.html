@@ -1,0 +1,226 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Pager henshin sample</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<style type="text/css">
+			body {
+				font-family: sans-serif;
+			}
+			
+			.bg_main {
+				background-color: #FFF7F1;
+				height: 100%;
+				width: 100%;
+				top: 0px;
+				left: 0px;
+				overflow: hidden;
+				position: absolute;
+			}
+
+			.container {
+				width: 20000px;
+				z-index: 40;
+				position: absolute;
+				top: 0px;
+				left: 0px;
+			}
+
+
+			.container_content {
+				background-color: #EDF7FF;
+				height: 300px;
+				width: 480px;
+				float: left;
+				position: relative;
+				display: block;
+				top: 50px;
+				left: 0px;
+				padding: 10px;
+			}
+
+			div.bg {
+				background: url('bg.png');
+				position: absolute;
+				display: block;
+				width: 100000px;
+				height: 100%;
+				top: 0px;
+				right: 0px;
+				margin-left: auto;
+				margin-right: auto;
+				z-index: 2;
+				float: right;
+			}
+
+			div.container_boundary {
+				width: 500px;
+				height: 400px;
+				position: relative;
+				display: block;
+				top: 0px;
+				left: 0px;
+				margin-left: auto;
+				margin-right: auto;
+				overflow: hidden;
+				border: 0px;
+				z-index: 3;
+			}
+			
+			div.bg_layers {
+				height: 200px;
+				width: 800px;
+				display: block;
+				position: relative;
+				z-index: 300;
+				margin-left: auto;
+				margin-right: auto;
+				overflow: hidden;
+			}
+			
+			div.bg_test_1 {
+				background-image: url('blue_clouds.png');
+				background-position-x: -100px;
+				background-repeat: no-repeat;
+				height: 200px;
+				width: 2000px;
+				padding: 0px;
+				display: block;
+				position: absolute;
+				top: 0px;
+				z-index: 300;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			
+			div.bg_test_2 {
+				background-image: url('yellow_clouds.png');
+				background-position-y: 50px;
+				background-repeat: no-repeat;
+				height: 200px;
+				width: 2000px;
+				padding: 0px;
+				display: block;
+				position: absolute;
+				top: 0px;
+				z-index: 300;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			
+			div.navi {
+				height: 80px;
+				width: 380px;
+				padding: 0px;
+				margin-left: auto;
+				margin-right: auto;
+				z-index: 300;
+				display: block;
+				position: relative;
+				text-align: center;
+			}
+			
+			div.navi input {
+				display: inline;
+				width: 180px;
+				float: left;
+				margin-left: auto;
+				margin-right: auto;
+				border: 1px solid darksalmon;
+				margin: 2px;
+			}
+			
+			#breeze_test {
+				padding: 15px;
+				clear: both;
+			}
+		</style>
+		
+		<script type="text/javascript" src="jquery.min.js"></script>
+		<script type="text/javascript" src="pager_henshin.js"></script>
+		
+		<script type="text/javascript">
+			var pager_henshin = new Henshin();
+			//setup the class names for the scrolling "parallax" background
+			pager_henshin.set_background_css_class("bg");
+			
+			//set the div lass of the content of the containers, which essentially is the page that we are sliding
+			pager_henshin.set_container_css_class("container_content");
+			
+			//how many div pages are we expecting
+			pager_henshin.set_max_page(5);
+			
+			//how wide is the pages, we want to make sure we slide at the right amount
+			pager_henshin.set_container_width(500); //in pixels indeed
+		
+			
+			$(document).ready(function() {
+				//add the backgrounds
+				pager_henshin.add_background_layer_position('bg_test_1', '200', '1300');
+				pager_henshin.add_background_layer_position('bg_test_2', '150', '2000');
+				
+				$("#next_button").click(function(){
+
+					if (pager_henshin.next()) {
+						pager_henshin.breeze('breeze_test', 20, 700, 'left'); //breeze moves things around look at the div next to the button
+						pager_henshin.animate_background_layer('bg_test_1', 'right');
+						pager_henshin.animate_background_layer('bg_test_2', 'right');
+					}
+				});
+
+				$("#prev_button").click(function(){
+
+					if (pager_henshin.prev()) {
+						pager_henshin.breeze('breeze_test', 12, 700, 'right');
+						pager_henshin.animate_background_layer('bg_test_1', 'left');
+						pager_henshin.animate_background_layer('bg_test_2', 'left');
+					}
+				});
+			});
+		</script>
+	</head>
+	<body>
+		
+		<div class="bg_main">
+			<div class="bg"></div>
+		</div>
+
+		<div class="container_boundary">
+			
+			<div class="container">
+				
+				<div class="container_content">
+					<h1>Sample application of pager henshin library</h1>
+					<p>
+						For the sake of simplicity, the css stylesheets and javascript will be embedded within this html file.
+					</p>
+					<p>
+						The aim for this utility is to be able to create a website with page sliding effect. 
+						At the moment this is all restricted to horizontal scroll, but nothing stops further development to support 
+						vertical scroll
+					</p>
+					With a bit of creative twist, we can use this library for something much more
+				</div>
+				<div class="container_content">It will be possible in the future releases to load each div using AJAX before sliding, to reduce bandwidth usage</div>
+				<div class="container_content">The background is trying to simulate a "psudo-ish" parallax effects. By the way parallax effects exist within old 2d side scrolling games such as Golden Axe, Contra, etc... see http://en.wikipedia.org/wiki/Parallax_scrolling</div>
+				<div class="container_content">Impressively, parallax effects also exist in old cartoon animation such as Disney's classics like Lady and the Tramp, Snow White and the 7 Dwarves, etc. If you are interested, see http://en.wikipedia.org/wiki/Multiplane_camera  </div>
+				<div class="container_content">Of course lastly, what's with this utility's name... Look in the source code for some explanation</div>
+			
+				
+			</div>
+			
+		</div>
+		<div class="navi">
+			<input type="button" value="< go to previous page" id="prev_button" style="display: block;">
+			<input type="button" value="go to next page >" id="next_button" style="display: block;">
+			<div id="breeze_test">{{breezy}}</div>
+		</div>
+		<div class="bg_layers">
+			<div class="bg_test_1" id="bg_test_1"></div>
+			<div class="bg_test_2" id="bg_test_2"></div>
+		</div>
+
+	</body>
+</html>
